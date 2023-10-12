@@ -1,0 +1,102 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <string.h>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <vector>
+#include <stdlib.h>
+
+using namespace std;
+
+class Student {
+private:
+	string name;
+	string studentId;
+	string birthYear;
+	string departmentName;
+	string telNum;
+
+public:
+	/*
+	strcpy 함수
+	char* strcpy(char* dest, const char* origin);
+	origin에 있는 문자열 전체를 dest 로 복사하는 함수
+
+	strncpy 함수
+	char* strncpy(char* dest, const char* origin, size_t n);
+	origin에 있는 문자열을 dest로 복사하는데 n만큼만 복사하는 함수
+	*/
+
+	Student(string a, string b, string c, string d, string e) {
+		name = a;
+		studentId = b;
+		birthYear = c;
+		departmentName = d;
+		telNum = e;
+	}
+	string getString() {
+		string result = string(departmentName) + '/';
+		result += string(name) + "/";
+		stringstream ss;
+		//문자열을 나눈다. 주어진 문자열에서 필요한 자료형에맞는 정보를 꺼낼 때 유용
+		ss << birthYear;
+		result += ss.str() + "/";
+		result += string(studentId) + "/";
+		result += string(telNum);
+		return result;
+	}
+	string getName() {
+		return name;
+	}
+	string getId() { return studentId; }
+	string getYear() { return birthYear; }
+	string getDept() { return departmentName; }
+	string getTel() { return telNum; }
+};
+
+vector<Student> studentList;
+
+int main(void) {
+	ifstream in("test_110114.txt");
+	if (!in.is_open()) {
+		cout << "파일을 찾을 수 없습니다" << endl;
+		return 0;
+	}
+	string s;
+	int i;
+	while (in) {
+		string name;
+		string studentId;
+		string birthYear;
+		string departmentName;
+		string telNum;
+
+		getline(in, s);
+		//cout << s << endl;
+		name = s;
+		getline(in, s);
+		studentId = s;
+		getline(in, s);
+		birthYear = s;
+		getline(in, s);
+		departmentName = s;
+		getline(in, s);
+		telNum = s;
+		getline(in, s);
+
+		Student student = Student(name, studentId, birthYear,departmentName, telNum );
+
+		studentList.push_back(student);
+	}
+
+	for (int i = 0; i < studentList.size(); i++) {
+		cout <<"name : " << studentList[i].getName() << "\n";
+		cout << "id : " << studentList[i].getId() << "\n";
+		cout << "year : " <<studentList[i].getYear() << "\n";
+		cout << "department : " << studentList[i].getDept() << "\n";
+		cout << "tel : " << studentList[i].getTel() << "\n";
+	}
+
+	in.close();
+	return 0;
+}
